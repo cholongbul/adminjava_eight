@@ -13,8 +13,10 @@ import java.io.*;
 public class XmlExplorer {
 
     private String locationPattern;
-
     private Resource[] resources;
+    public Resource[] getResources() {
+        return resources;
+    }
 
     public void setLocationPattern(String local) throws IOException {
         StringBuilder sb = new StringBuilder();
@@ -43,7 +45,6 @@ public class XmlExplorer {
         for (Resource res : resources) {
             if (res.getFilename().toLowerCase().contains(chartname)) {
                 filename = res.getFilename();
-                System.out.println(filename);
                 break;
             }
         }

@@ -15,7 +15,12 @@
     <name>adminjava_eight</name>
     <description>adminjava_eight</description>
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <start-class>com.jmoh.admin.adminjava_eight.AdminjavaEightApplication</start-class>
     </properties>
     <dependencies>
         <dependency>
@@ -46,6 +51,7 @@
     </dependencies>
 
     <build>
+        <finalName>${artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

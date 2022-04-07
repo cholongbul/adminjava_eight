@@ -74,6 +74,7 @@
 <script src="dist/js/chart/options.js"></script>
 <script src="dist/js/chart/datasetting.js"></script>
 <script src="dist/js/chart/createchart.js"></script>
+<script src="dist/js/cookie.js"></script>
 <!-- Page specific script -->
 <script>
     $(function () {
@@ -89,17 +90,10 @@
         let card_header_height = document.getElementsByClassName('card-header')[0].offsetHeight;
         var docV = document.documentElement;
 
-        // 전체화면 설정
-        if (docV.requestFullscreen)
-            docV.requestFullscreen();
-        else if (docV.webkitRequestFullscreen) // Chrome, Safari (webkit)
-            docV.webkitRequestFullscreen();
-        else if (docV.mozRequestFullScreen) // Firefox
-            docV.mozRequestFullScreen();
-        else if (docV.msRequestFullscreen) // IE or Edge
-            docV.msRequestFullscreen();
+        var localcode = prompt('지역코드를 입력하세요', getCookie("localcode"));
+        setCookie("localcode", localcode, 60);
 
-        var inputString = prompt('지역코드를 입력하세요', 'Asite');
+
 
 
         getXmlData(); //화면 로딩 데이터
@@ -110,11 +104,15 @@
         function getXmlData() {
             $.ajax({
                 type: "GET",
-                url: "getData.do?chartname=" + chartnamelist[reqcnt] + "&local=" + inputString, //요청변수에 따른 반환 데이터 변경
+                url: "getData.do?chartname=" + chartnamelist[reqcnt] + "&local=" + localcode, //요청변수에 따른 반환 데이터 변경
                 dataType: "xml",
                 //ajax요청
                 success: handleData,
                 error: function (request, status, error) {
+                    if (request.responseText.includes("FileNotFoundException")|| (request.status==500)){
+                        alert("지역코드가 잘못입력되었습니다.");
+                        window.location.reload();
+                    }
                     console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                     clearInterval(interval);
                 }
@@ -124,7 +122,7 @@
         //xml데이터 처리
         function handleData(xml, textStatus, response) {
             //xml변수선언
-            let xmlcnt = response.getResponseHeader("xmlcnt");
+            let xmlcnt = getCookie("xmlcnt");
             let parsingXml = parserXml(xml);
             let label2d = parsingXml[0];
             let data2d = parsingXml[1];

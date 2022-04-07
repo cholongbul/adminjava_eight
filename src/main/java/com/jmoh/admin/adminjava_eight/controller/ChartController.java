@@ -1,6 +1,9 @@
 package com.jmoh.admin.adminjava_eight.controller;
 
 import com.jmoh.admin.adminjava_eight.domain.XmlExplorer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,17 +11,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class ChartController {
+
+    Logger logger = LoggerFactory.getLogger(ChartController.class);
+
 
     @Autowired
     XmlExplorer xmlExplorer;
 
 
     @GetMapping("/")
-    public String chart(Model model){
+    public String chart(Model model) {
         return "index";
     }
 
@@ -27,10 +34,21 @@ public class ChartController {
     @ResponseBody
     public String getElectiondata(@RequestParam("chartname") String chartname, @RequestParam("local") String local,
                                   HttpServletResponse response) throws Exception {
-        System.out.println(chartname + local);
+        StringBuilder logbuilder = new StringBuilder();
+        logbuilder.append("차트명: ");
+        logbuilder.append(chartname);
+        logbuilder.append(" 지역명: ");
+        logbuilder.append(local);
+        logger.info(logbuilder.toString());
         xmlExplorer.setLocationPattern(local);
-        response.addIntHeader("xmlcnt", xmlExplorer.getFilecnt());
+        String result = "";
 
-        return xmlExplorer.getDataAPI(chartname);
+        Cookie cookie = new Cookie("xmlcnt", Integer.toString(xmlExplorer.getFilecnt()));
+        response.addCookie(cookie);
+        cookie.setMaxAge(60 * 60 * 24);
+        result = xmlExplorer.getDataAPI(chartname);
+
+
+        return result;
     }
 }
