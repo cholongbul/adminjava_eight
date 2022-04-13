@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminLTE 3 | ChartJS</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition layout-top-nav vh-100">
+<div class="wrapper">
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>차트 화면</h1>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content" style="height: calc(100vh - 130px)">
+      <div class="container-fluid">
+        <div class="col-md-12">
+          <!-- AREA CHART -->
+          <div class="card card-primary">
+            <div class="card-header" id="chart-card-header">
+              <h3 class="card-title" id="barOrMix-title">Area Chart</h3>
+            </div>
+            <div class="card-body">
+              <div class="chart interval-chart">
+                <canvas id="barOrMixChart"
+                        style="height: calc(100vh - 180px); width:100vw"></canvas>
+              </div>
+            </div>
+            <!-- /.card-body -->
+          </div>
+
+
+        </div>
+        <!-- /.card -->
+
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2022 <a href="http://cnkplus.com/">CNKPlus.com</a></strong>
+  </footer>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- ChartJS -->
+<script src="plugins/chart.js/Chart.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/chart/options.js"></script>
+<script src="dist/js/chart/datasetting.js"></script>
+<script src="dist/js/chart/createchart.js"></script>
+<script src="dist/js/cookie.js"></script>
+<!-- Page specific script -->
+<script>
+  $(function () {
+    /* ChartJS
+ * -------
+ * Here we will create a few charts using ChartJS
+ */
+    // 변수선언
+    const chartnamelist = ["delivery", "revenue", "stock"]
+    let reqcnt = 0 //요청 파라미터
+    let header_height = document.getElementsByClassName('content-header')[0].offsetHeight;
+    let footer_height = document.getElementsByClassName('main-footer')[0].offsetHeight;
+    let card_header_height = document.getElementById('chart-card-header').offsetHeight;
+
+    var localcode = prompt('지역코드를 입력하세요', getCookie("localcode"));
+    setCookie("localcode", localcode, 60);
+
+
+
+
+    getXmlData(); //화면 로딩 데이터
+    var interval = setInterval(getXmlData, 10000); // 반복 요청 데이터
+
+
+    //ajax xmldata 요청
+    function getXmlData() {
+      $.ajax({
+        type: "GET",
+        url: "getData.do?chartname=" + chartnamelist[reqcnt] + "&local=" + localcode, //요청변수에 따른 반환 데이터 변경
+        dataType: "xml",
+        //ajax요청
+        success: handleData,
+        error: handleError
+      });
+    };
+
+
+    //xml데이터 처리
+    function handleData(xml, textStatus, response) {
+
+      //xml변수선언
+      let xmlcnt = getCookie("xmlcnt");
+      let parsingXml = parserXml(xml);
+      let label2d = parsingXml[0];
+      let data2d = parsingXml[1];
+      let datanamelist = parsingXml[2];
+      let chartname = parsingXml[3];
+      let chart_height = screen.height - header_height - footer_height - card_header_height - 60; //반응형 차트 높이
+
+      //메소드
+      $("#barOrMix-title").text(chartname) //차트 제목 변경
+      $(".interval-chart").html('</div><canvas id="barOrMixChart" style="width:100vw"></canvas>'); //새로운 그래프 리셋
+      $("#barOrMixChart").css('height', chart_height + 'px'); //차트 높이 설정
+      if (chartnamelist[reqcnt] == "revenue") {
+        let data = setdata(label2d, data2d, datanamelist);
+        let option = setOptions();
+        createBarChart(data, option); //막대 차트 적용
+      }
+      if (chartnamelist[reqcnt] == "delivery") {
+        let data = setmultidata(label2d, data2d, datanamelist);
+        let option = setOptions();
+        createMultiLineChart(data, option); //멀티 라인 차트 적용
+      }
+      if (chartnamelist[reqcnt] == "stock") {
+        let data = setmultiLineBarData(label2d, data2d, datanamelist);
+        let option = setmultiLineBarOption();
+        createLineBarChart(data, option); //데이터명 적용
+      }
+
+      if (reqcnt + 1 == xmlcnt) {
+        reqcnt = 0;
+      } else {
+        reqcnt++
+      }
+
+    }
+    function handleError(request, status, error) {
+      if (request.responseText.includes("FileNotFoundException")|| (request.status==500)){
+        alert("지역코드가 잘못입력되었습니다.");
+        window.location.reload();
+      }
+      console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+      clearInterval(interval);
+    }
+
+    //xml파싱, 변수 추출
+    function parserXml(xml) {
+      let datanamelist = [];
+      let label2d = [];
+      let data2d = [];
+      let chartname;
+      let result = []
+      // xml파싱
+      $(xml).find("chart").each(function () {
+        chartname = $(this).find("chartname").text();
+
+        $(this).find("dataset").each(function (i) {
+          let labellist = [];
+          let datalist = [];
+          datanamelist.push($(this).find("dataname").text());
+          $(this).find("item").each(function (i) {
+            datalist.push($(this).find("data").text());
+            labellist.push($(this).find("label").text());
+          });
+          label2d.push(labellist);
+          data2d.push(datalist);
+        });
+      });
+
+
+      result.push(label2d);
+      result.push(data2d);
+      result.push(datanamelist);
+      result.push(chartname);
+      return result;
+    };
+
+
+  });
+</script>
+</body>
+</html>

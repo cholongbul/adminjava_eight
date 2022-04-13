@@ -13,17 +13,17 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
 </head>
-<body class="hold-transition layout-top-nav vh-100">
+<body class="hold-transition layout-top-nav">
 <div class="wrapper">
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <div class="container-fluid">
+            <div class="container">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>AdminLTE</h1>
+                        <h1>DashBoard 초기 설정</h1>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
@@ -31,27 +31,112 @@
 
         <!-- Main content -->
         <section class="content" style="height: calc(100vh - 130px)">
-            <div class="container-fluid">
+            <div class="container">
                 <div class="col-md-12">
                     <!-- AREA CHART -->
                     <div class="card card-primary">
-                        <div class="card-header">
-                            <h3 class="card-title" id="barOrMix-title">Area Chart</h3>
+                        <div class="card-header" id="chart-chard-header">
+                            <h1 class="card-title" id="barOrMix-title">설정</h1>
+
                         </div>
                         <div class="card-body">
-                            <div class="chart interval-chart">
-                                <canvas id="barOrMixChart"
-                                        style="height: calc(100vh - 180px); width:100vw"></canvas>
+                            <div class="mb-3">
+                                <strong>지점 선택</strong>
+                            </div>
+
+                            <div class="btn-group-toggle mb-5" data-toggle="buttons">
+                                <div class="btn-group-toggle mb-3">
+                                    <label class="btn btn-outline-primary mr-2">
+                                        <input type="radio" name="siteoptions" id="Asite" value="Asite"
+                                               autocomplete="off">
+                                        A지점
+                                    </label>
+                                    <label class="btn btn-outline-primary mr-2">
+                                        <input type="radio" name="siteoptions" id="Bsite" value="Bsite"
+                                               autocomplete="off">
+                                        B지점
+                                    </label>
+                                    <label class="btn btn-outline-primary mr-2">
+                                        <input type="radio" name="siteoptions" id="option_a3" value="Bsite"
+                                               autocomplete="off"> C지점
+                                    </label>
+                                    <label class="btn btn-outline-primary mr-2">
+                                        <input type="radio" name="siteoptions" id="option_a4" value="Bsite"
+                                               autocomplete="off"> D지점
+                                    </label>
+                                    <label class="btn btn-outline-primary mr-2">
+                                        <input type="radio" name="siteoptions" id="option_a5" value="Bsite"
+                                               autocomplete="off"> E지점
+                                    </label>
+                                    <label class="btn btn-outline-primary mr-2">
+                                        <input type="radio" name="siteoptions" id="option_a6" value="Bsite"
+                                               autocomplete="off"> F지점
+                                    </label>
+                                </div>
+                                <div class="btn-group-toggle mb-3">
+
+                                    <label class="btn btn-outline-primary mr-2">
+                                        <input type="radio" name="siteoptions" id="option_a7" value="Bsite"
+                                               autocomplete="off"> A지점
+                                    </label>
+                                    <label class="btn btn-outline-primary mr-2">
+                                        <input type="radio" name="siteoptions" id="option_a8" value="Bsite"
+                                               autocomplete="off"> B지점
+                                    </label>
+                                    <label class="btn btn-outline-primary mr-2">
+                                        <input type="radio" name="siteoptions" id="option_a9" value="Bsite"
+                                               autocomplete="off"> C지점
+                                    </label>
+                                    <label class="btn btn-outline-primary mr-2">
+                                        <input type="radio" name="siteoptions" id="option_a10" value="Bsite"
+                                               autocomplete="off"> D지점
+                                    </label>
+                                    <label class="btn btn-outline-primary mr-2">
+                                        <input type="radio" name="siteoptions" id="option_a11" value="Bsite"
+                                               autocomplete="off"> E지점
+                                    </label>
+                                    <label class="btn btn-outline-primary mr-2">
+                                        <input type="radio" name="siteoptions" id="option_a12" value="Bsite"
+                                               autocomplete="off"> F지점
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="btn-group-toggle mb-5" data-toggle="buttons">
+                                <div class="mb-3">
+                                    <strong>화면 전환 시간</strong>
+                                </div>
+
+                                <div class="btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn btn-outline-primary mr-2">
+                                        <input type="radio" name="intervaloptions" id="interval_3" value="3"
+                                               autocomplete="off"> 3초 간격
+                                    </label>
+                                    <label class="btn btn-outline-primary mr-2">
+                                        <input type="radio" name="intervaloptions" id="interval_5" value="5"
+                                               autocomplete="off"> 5초 간격
+                                    </label>
+                                    <label class="btn btn-outline-primary mr-2">
+                                        <input type="radio" name="intervaloptions" id="interval_10" value="10"
+                                               autocomplete="off"> 10초
+                                        간격
+                                    </label>
+                                    <label class="btn btn-outline-primary mr-2">
+                                        <input type="radio" name="intervaloptions" id="interval_15" value="15"
+                                               autocomplete="off"> 15초
+                                        간격
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button type="submit" id="chartStartBtn" class="btn btn-primary">실행</button>
+                        </div>
                     </div>
 
-
                 </div>
-                <!-- /.card -->
-
-            </div><!-- /.container-fluid -->
+            </div>
         </section>
         <!-- /.content -->
     </div>
@@ -77,7 +162,78 @@
 <script src="dist/js/cookie.js"></script>
 <!-- Page specific script -->
 <script>
-    $(function () {
+    if (!(getCookie('localsite') === undefined) && !(getCookie('intervaltime') === undefined)) {
+        $("input:radio[id='" + getCookie('localsite') + "']").prop("checked", true)
+        $("input:radio[id='interval_" + getCookie('intervaltime') + "']").prop("checked", true)
+    }
+    $('#chartStartBtn').click(function () {
+        let localsite = $('input[name="siteoptions"]:checked').val();
+        let intervaltime = $('input[name="intervaloptions"]:checked').val();
+        if (localsite === undefined || intervaltime === undefined) {
+            alert("지점 및 화면 전환 간격을 선택해주세요.")
+        } else {
+
+            $('.content-wrapper').remove();
+            $('.wrapper').prepend("  <!-- Content Wrapper. Contains page content -->\n" +
+                "  <div class=\"content-wrapper\">\n" +
+                "    <!-- Content Header (Page header) -->\n" +
+                "    <section class=\"content-header\">\n" +
+                "      <div class=\"container-fluid\">\n" +
+                "        <div class=\"row mb-2\">\n" +
+                "          <div class=\"col-sm-6\">\n" +
+                "          </div>\n" +
+                "        </div>\n" +
+                "      </div><!-- /.container-fluid -->\n" +
+                "    </section>\n" +
+                "\n" +
+                "    <!-- Main content -->\n" +
+                "    <section class=\"content\" style=\"height: calc(100vh - 130px)\">\n" +
+                "      <div class=\"container-fluid\">\n" +
+                "        <div class=\"col-md-12\">\n" +
+                "          <!-- AREA CHART -->\n" +
+                "          <div class=\"card card-primary\">\n" +
+                "            <div class=\"card-header\" id=\"chart-card-header\">\n" +
+                "              <h1 class=\"card-title\" style=\"font-size: 1.8rem\" id=\"barOrMix-title\">Area Chart</h1>\n" +
+                "            </div>\n" +
+                "            <div class=\"card-body\">\n" +
+                "              <div class=\"chart interval-chart\">\n" +
+                "                <canvas id=\"barOrMixChart\"\n" +
+                "                        style=\"height: calc(100vh - 180px); width:100vw\"></canvas>\n" +
+                "              </div>\n" +
+                "            </div>\n" +
+                "            <!-- /.card-body -->\n" +
+                "          </div>\n" +
+                "\n" +
+                "\n" +
+                "        </div>\n" +
+                "        <!-- /.card -->\n" +
+                "\n" +
+                "      </div><!-- /.container-fluid -->\n" +
+                "    </section>\n" +
+                "    <!-- /.content -->\n" +
+                "  </div>");
+
+            draw_chart(localsite, intervaltime);
+            openFullScreenMode();
+        }
+    });
+
+    let doc = document.documentElement;
+
+    function openFullScreenMode() {
+        if (doc.requestFullscreen)
+            doc.requestFullscreen();
+        else if (doc.webkitRequestFullscreen) // Chrome, Safari (webkit)
+            doc.webkitRequestFullscreen();
+        else if (doc.mozRequestFullScreen) // Firefox
+            doc.mozRequestFullScreen();
+        else if (doc.msRequestFullscreen) // IE or Edge
+            doc.msRequestFullscreen();
+        $('.fullscreen').hide();
+        $('.close-fullscreen').show();
+    };
+
+    let draw_chart = function (localsite, intervaltime) {
         /* ChartJS
      * -------
      * Here we will create a few charts using ChartJS
@@ -87,40 +243,33 @@
         let reqcnt = 0 //요청 파라미터
         let header_height = document.getElementsByClassName('content-header')[0].offsetHeight;
         let footer_height = document.getElementsByClassName('main-footer')[0].offsetHeight;
-        let card_header_height = document.getElementsByClassName('card-header')[0].offsetHeight;
-        var docV = document.documentElement;
+        let card_header_height = document.getElementById('chart-card-header').offsetHeight;
 
-        var localcode = prompt('지역코드를 입력하세요', getCookie("localcode"));
-        setCookie("localcode", localcode, 60);
+        setCookie("localsite", localsite, 60);
+        setCookie("intervaltime", intervaltime, 60);
 
-
-
-
+        console.log(intervaltime + "초 간격")
+        console.log(localsite + "지역")
         getXmlData(); //화면 로딩 데이터
-        var interval = setInterval(getXmlData, 10000); // 반복 요청 데이터
+        var interval = setInterval(getXmlData, intervaltime * 1000); // 반복 요청 데이터
 
 
         //ajax xmldata 요청
         function getXmlData() {
             $.ajax({
                 type: "GET",
-                url: "getData.do?chartname=" + chartnamelist[reqcnt] + "&local=" + localcode, //요청변수에 따른 반환 데이터 변경
+                url: "getData.do?chartname=" + chartnamelist[reqcnt] + "&local=" + localsite, //요청변수에 따른 반환 데이터 변경
                 dataType: "xml",
                 //ajax요청
                 success: handleData,
-                error: function (request, status, error) {
-                    if (request.responseText.includes("FileNotFoundException")|| (request.status==500)){
-                        alert("지역코드가 잘못입력되었습니다.");
-                        window.location.reload();
-                    }
-                    console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-                    clearInterval(interval);
-                }
+                error: handleError
             });
         };
 
+
         //xml데이터 처리
-        function handleData(xml, textStatus, response) {
+        function handleData(xml) {
+
             //xml변수선언
             let xmlcnt = getCookie("xmlcnt");
             let parsingXml = parserXml(xml);
@@ -129,20 +278,17 @@
             let datanamelist = parsingXml[2];
             let chartname = parsingXml[3];
             let chart_height = screen.height - header_height - footer_height - card_header_height - 60; //반응형 차트 높이
-            console.log("높이:" + chart_height);
-            console.log("높이:" + header_height);
-            console.log("높이:" + footer_height);
-            console.log("높이:" + card_header_height);
+
             //메소드
-            $("#barOrMix-title").text(chartname) //차트 제목 변경
+            $("#barOrMix-title").text(chartname + " - " + getCookie("localsite")) //차트 제목 변경
             $(".interval-chart").html('</div><canvas id="barOrMixChart" style="width:100vw"></canvas>'); //새로운 그래프 리셋
             $("#barOrMixChart").css('height', chart_height + 'px'); //차트 높이 설정
-            console.log(chartnamelist[reqcnt])
             if (chartnamelist[reqcnt] == "revenue") {
                 let data = setdata(label2d, data2d, datanamelist);
                 let option = setOptions();
                 createBarChart(data, option); //막대 차트 적용
-            } else if (chartnamelist[reqcnt] == "delivery") {
+            }
+            if (chartnamelist[reqcnt] == "delivery") {
                 let data = setmultidata(label2d, data2d, datanamelist);
                 let option = setOptions();
                 createMultiLineChart(data, option); //멀티 라인 차트 적용
@@ -160,6 +306,12 @@
             }
 
         }
+
+        function handleError(request, status, error) {
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            clearInterval(interval);
+        }
+
 
         //xml파싱, 변수 추출
         function parserXml(xml) {
@@ -186,10 +338,6 @@
             });
 
 
-            console.log(datanamelist);
-            console.log(label2d[0]);
-            console.log(data2d[0]);
-
             result.push(label2d);
             result.push(data2d);
             result.push(datanamelist);
@@ -198,7 +346,8 @@
         };
 
 
-    });
+    };
+
 </script>
 </body>
 </html>

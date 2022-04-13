@@ -10,9 +10,11 @@ function setmultiLineBarOption() {
                 scaleLabel: {
                     display: true,
                     labelString: 'value',
-                    fontColor: 'rgba(60,141,188,0.7)'
+                    fontColor: 'rgba(60,141,188,0.7)',
+                    fontSize: 20
                 },
                 ticks: {
+                    fontSize: 20,
                     beginAtZero: true
                 },
                 gridLines: {
@@ -24,9 +26,11 @@ function setmultiLineBarOption() {
                 scaleLabel: {
                     display: true,
                     labelString: "turn",
-                    fontColor: '#f39c12'
+                    fontColor: '#f39c12',
+                    fontSize: 20
                 },
                 ticks: {
+                    fontSize: 20,
                     beginAtZero: true
                 }
             }],
@@ -39,7 +43,10 @@ function setmultiLineBarOption() {
                 },
                 gridLines: {
                     color: "rgba(204, 204, 204,0.1)"
-                }
+                },
+                ticks: {
+                    fontSize: 20,
+                 }
             }, {
                 id: 'turn-x',
                 offset: true,
@@ -48,12 +55,19 @@ function setmultiLineBarOption() {
                 scaleLabel: {
                     display: false,
                     labelString: 'turn-x'
+                },
+                ticks: {
+                    fontSize: 20,
                 }
 
             }]
         },
         legend: {
-            display: true
+            display: true,
+            labels: {
+                fontSize: 20,
+                boxWidth: 70
+            }
         }
     };
 
@@ -63,8 +77,22 @@ function setmultiLineBarOption() {
 function setOptions() {
     let option = {
         maintainAspectRatio: false,
+        scales:{
+            yAxes:[{ ticks: {
+                    fontSize: 20,
+                }}],
+            xAxes: [{
+                ticks: {
+                    fontSize: 20,
+                }
+            }]
+        },
         legend: {
-            display: true
+            display: true,
+            labels: {
+                fontSize: 20,
+                boxWidth: 70
+            }
         }
     };
 
