@@ -5,6 +5,7 @@ function setdata(label2d, data2d, datanamelist) {
         datasets: [{
             label: datanamelist[0],
             data: data2d[0],
+            maxBarThickness: 100,
             backgroundColor: 'rgba(60,141,188,0.9)',
             borderColor: 'rgba(60,141,188,0.8)',
             pointRadius: false,
@@ -74,6 +75,7 @@ function setmultiLineBarData(label2d, data2d, datanamelist) {
                 type: 'bar',
                 label: datanamelist[1],
                 data: data2d[1],
+                maxBarThickness: 100,
                 backgroundColor: 'rgba(60,141,188,0.7)',
                 borderColor: 'rgba(60,141,188,0.8)',
                 pointRadius: false,

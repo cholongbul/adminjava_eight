@@ -5,6 +5,7 @@ function setmultiLineBarOption() {
 
         scales: {
             yAxes: [{
+                position: 'left',
                 display: true,
                 stacked: true,
                 scaleLabel: {
@@ -15,12 +16,14 @@ function setmultiLineBarOption() {
                 },
                 ticks: {
                     fontSize: 20,
+                    fontColor: 'rgba(60,141,188,0.7)',
                     beginAtZero: true
                 },
                 gridLines: {
                     color: "rgba(204, 204, 204,0.1)"
                 }
             }, {
+                position: 'right',
                 id: 'turn-y',
                 display: true,
                 scaleLabel: {
@@ -31,6 +34,7 @@ function setmultiLineBarOption() {
                 },
                 ticks: {
                     fontSize: 20,
+                    fontColor: '#f39c12',
                     beginAtZero: true
                 }
             }],
@@ -38,7 +42,6 @@ function setmultiLineBarOption() {
                 display: true,
                 stacked: true,
                 scaleLabel: {
-                    display: true,
                     labelString: 'value-x'
                 },
                 gridLines: {
@@ -46,7 +49,8 @@ function setmultiLineBarOption() {
                 },
                 ticks: {
                     fontSize: 20,
-                 }
+
+                }
             }, {
                 id: 'turn-x',
                 offset: true,
@@ -77,10 +81,12 @@ function setmultiLineBarOption() {
 function setOptions() {
     let option = {
         maintainAspectRatio: false,
-        scales:{
-            yAxes:[{ ticks: {
+        scales: {
+            yAxes: [{
+                ticks: {
                     fontSize: 20,
-                }}],
+                }
+            }],
             xAxes: [{
                 ticks: {
                     fontSize: 20,
